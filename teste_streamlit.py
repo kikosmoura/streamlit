@@ -5,13 +5,11 @@ import numpy as np
 st.title('Roubos de carros em São Paulo - Usando o dataset da Luana')
 
 DATE_COLUMN = 'dataocorrencia'
-DATA_URL = ('arquivos/roubos_sp.csv')
+DATA_URL = ('https://raw.githubusercontent.com/kikosmoura/streamlit/main/roubos_sp.csv')
 
-#@st.cache
+@st.cache
 def load_data(nrows):
-#    data = pd.read_csv(DATA_URL, nrows=nrows)
-    data = pd.read_csv(DATA_URL, nrows=nrows)
-#    data = data.reset_index()
+    data = pd.read_csv(DATA_URL, sep=';', nrows=nrows)
     lowercase = lambda x: str(x).lower()
     data.rename(lowercase, axis='columns', inplace=True)
     data[DATE_COLUMN] = pd.to_datetime(data[DATE_COLUMN])
@@ -21,15 +19,7 @@ def load_data(nrows):
 data_load_state = st.text('Carregando os dados...')
 data = load_data(10000)
 data = data.dropna()
-#data = data[[DATE_COLUMN,'latitude','longitude']]
-#data.columns = [DATE_COLUMN, 'lat','lon']
 
-#data['lat'] = data['lat'].str.replace(',','.')
-#data['lon'] = data['lon'].str.replace(',','.')
-#data['lat'] =pd.to_numeric(data['lat'])
-#data['lon'] =pd.to_numeric(data['lon'])
-#data['lat'] = data['lat'].astype(float)
-#data['lon'] = data['lon'].astype(float)
 data_load_state.text("Informações de roubos carregadas com sucesso !!!")
 
 if st.checkbox('Mostre a tabela'):
